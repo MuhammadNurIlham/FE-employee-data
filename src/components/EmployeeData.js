@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { API } from '../config/API';
 import Form from 'react-bootstrap/Form';
-import ButtonGroup from '../atoms/ButtonGroup';
 import Table from 'react-bootstrap/esm/Table';
 import AddModal from './modals/AddModal';
 import { Button } from 'react-bootstrap';
+import DetailModal from './modals/DetailModal';
+import EditModal from './modals/EditModal';
+import DeleteModal from './modals/DeleteModal';
 
 function FormInput() {
     const [filter, setFilter] = useState([]);
@@ -125,9 +127,30 @@ function FormInput() {
                                     <td>{item?.address}</td>
                                     <td>{item?.country}</td>
                                     <td className="d-grid btn-sm gap-2 d-md-flex justify-content-md-end" >
-                                        <ButtonGroup title='Detail' />
-                                        <ButtonGroup title='Edit' />
-                                        <ButtonGroup title='Delete' />
+                                        <DetailModal
+                                            nik={item?.nik}
+                                            name={item?.name}
+                                            birth={item?.birth}
+                                            age={getAge(item?.birth)}
+                                            gender={item?.gender}
+                                            address={item?.address}
+                                            country={item?.country}
+
+                                        />
+                                        <p>_</p>
+                                        <EditModal
+                                            id={item?.id}
+                                            nik={item?.nik}
+                                            name={item?.name}
+                                            birth={item?.birth}
+                                            gender={item?.gender}
+                                            address={item?.address}
+                                            country={item?.country}
+                                        />
+                                        <p>_</p>
+                                        <DeleteModal
+                                            id={item?.id}
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
