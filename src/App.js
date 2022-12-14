@@ -1,14 +1,10 @@
 import './App.css';
-import ButtonAction from './components/ButtonAction';
-import EmployeeTable from './components/EmployeeTable';
-import FormInput from './components/FormInput';
+import EmployeeData from './components/EmployeeData';
 
 function App() {
   return (
     <div className="App container">
-      <FormInput />
-      <ButtonAction />
-      <EmployeeTable />
+      <EmployeeData />
     </div>
   );
 }
