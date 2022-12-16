@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
+import { Button, Form, Table } from 'react-bootstrap';
+
+
 import { API } from '../config/API';
-import Form from 'react-bootstrap/Form';
-import Table from 'react-bootstrap/esm/Table';
 import AddModal from './modals/AddModal';
-import { Button } from 'react-bootstrap';
 import DetailModal from './modals/DetailModal';
 import EditModal from './modals/EditModal';
 import DeleteModal from './modals/DeleteModal';
@@ -65,13 +65,14 @@ function FormInput() {
 
     return (
         <div className="container">
+            <h3 className="text-center py-3">Data Karyawan</h3>
             <div className='row'>
                 <div className='col-md-5'>
                     <Form onSubmit={(e) => handleOnSubmit.mutate(e)}>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label className='fw-bold'>NIK</Form.Label>
                             <Form.Control
-                                placeholder="Masukkan NIK Anda"
+                                placeholder="Insert NIK here ..."
                                 type="text"
                                 id="nik"
                                 name="nik"
@@ -81,7 +82,7 @@ function FormInput() {
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label className='fw-bold'>Nama</Form.Label>
                             <Form.Control
-                                placeholder="Masukkan Nama Anda"
+                                placeholder="Insert Name here ..."
                                 type="text"
                                 id="name"
                                 name="name"
@@ -96,7 +97,7 @@ function FormInput() {
                 {/* <ButtonGroup title='Add' /> */}
                 <AddModal />
                 {/* <ButtonGroup title='Search' /> */}
-                <Button className='px-5' onClick={(e) => handleOnSubmit.mutate(e)}>Search</Button>
+                <Button className='px-3 my-2 py-2' onClick={(e) => handleOnSubmit.mutate(e)}>Search</Button>
             </div>
 
             <div className='table text-center'>

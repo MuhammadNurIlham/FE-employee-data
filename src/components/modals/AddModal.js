@@ -42,7 +42,7 @@ function AddModal() {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="primary" className='px-3 my-2 py-2' onClick={handleShow}>
                 Add Data
             </Button>
 
