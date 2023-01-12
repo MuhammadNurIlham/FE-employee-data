@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -8,6 +9,7 @@ import { API } from '../../config/API';
 
 function AddModal() {
     const [show, setShow] = useState(false);
+    const [error, setError] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -26,17 +28,31 @@ function AddModal() {
             ...form,
             [e.target.name]: e.target.value,
         });
+        if (form.nik.length == 0 || form.name.length == 0) {
+            setError(true);
+        }
     };
 
     const handleOnSubmit = useMutation(async (e) => {
         try {
             e.preventDefault();
 
-            await API.post('/karyawan', form);
-            alert('add data success');
+            if (form.nik.length == 0 || form.name.length == 0) {
+                setError(true);
+            } else {
+
+                await API.post('/karyawan', form);
+                <Alert variant="success" className="py-1">
+                    Add data success!
+                </Alert>
+                handleClose();
+            }
+
         } catch (error) {
             console.log(error);
-            alert('add data failed');
+            <Alert variant="danger" className="py-1">
+                Oops! Something went wrong!
+            </Alert>
         }
     })
 
@@ -62,6 +78,10 @@ function AddModal() {
                                 name="nik"
                                 onChange={handleOnChange}
                             />
+                            {error && form.nik.length <= 0 ?
+                                <Form.Label className="text-danger">Field NIK is required, can't empty</Form.Label>
+                                : ""
+                            }
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="AddModalForm.ControlInput1">
@@ -72,6 +92,10 @@ function AddModal() {
                                 name='name'
                                 onChange={handleOnChange}
                             />
+                            {error && form.name.length <= 0 ?
+                                <Form.Label className="text-danger">Field Full name is required, can't empty</Form.Label>
+                                : ""
+                            }
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="AddModalForm.ControlInput1">
@@ -156,14 +180,16 @@ function AddModal() {
                         </Form.Group>
 
                     </Form>
-                </Modal.Body>
-                <Modal.Footer>
 
+                </Modal.Body>
+
+                <Modal.Footer>
                     <Button
                         variant="primary"
                         onClick={(e) => {
-                            handleClose()
+                            error ? setError(true) :
                             handleOnSubmit.mutate(e)
+                            handleClose()
                         }}>Save
                     </Button>
 

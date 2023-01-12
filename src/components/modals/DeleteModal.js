@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
 import { API } from '../../config/API';
 
 
@@ -29,8 +31,25 @@ function DeleteModal(props) {
                 <Modal.Footer>
                     <Button variant="secondary"
                         onClick={() => {
-                            handleClose()
-                            handleDelete()
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                    )
+                                    handleClose()
+                                    handleDelete()
+                                }
+                            })
                         }
                         }>
                         Oke

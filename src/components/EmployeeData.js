@@ -72,6 +72,7 @@ function FormInput() {
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label className='fw-bold'>NIK</Form.Label>
                             <Form.Control
+                                required
                                 placeholder="Insert NIK here ..."
                                 type="text"
                                 id="nik"
@@ -107,8 +108,8 @@ function FormInput() {
                             <th>NIK</th>
                             <th>FullName</th>
                             <th>Age</th>
-                            <th>BithDate</th>
                             <th>Gender</th>
+                            <th>BirthDate</th>
                             <th>Address</th>
                             <th>Country</th>
                             <th>Action</th>

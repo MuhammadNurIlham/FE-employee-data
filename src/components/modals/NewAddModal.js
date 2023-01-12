@@ -1,70 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import { useMutation, useQuery } from 'react-query';
+import React, { useState } from 'react';
+import { Alert } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
-
-import { API } from '../../config/API';
-
-
-function EditModal(props) {
+function NewAddModal() {
     const [show, setShow] = useState(false);
+    const [message, setMessage] = useState(null);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const [form, setForm] = useState({
-        id: props?.id,
-        nik: props?.nik,
-        name: props?.name,
-        gender: props?.gender,
-        birth: props?.birth,
-        address: props?.address,
-        country: props?.country,
+        nik: "",
+        name: "",
+        gender: "",
+        birth: "",
+        address: "",
+        country: ""
     });
+
+    const validateInput = () => {
+        let nik = document.getElementById('nik').value
+        let name = document.getElementById('name').value
+        if (nik === '' || name === '') {
+            const ValidationInput = (
+                <Alert variant="danger" className="py-1">
+                    this field required
+                </Alert>
+            );
+            setMessage(ValidationInput);
+        }
+    }
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
 
     const handleOnChange = (e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         });
+        validateInput();
     };
-
-    const handleOnSubmit = useMutation(async (e) => {
-        try {
-            e.preventDefault();
-
-            await API.post("/karyawan", form);
-            alert("berhasil edit data");
-        } catch (error) {
-            console.log(error);
-        }
-    });
-
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Edit Data
+            <Button variant="primary" className='px-3 my-2 py-2' onClick={handleShow}>
+                Add Data
             </Button>
 
             <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Data</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={(e) => handleOnSubmit.mutate(e)}>
 
+                <Modal.Header closeButton>
+                    <Modal.Title>Add Data</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+
+                    <Form className="needs-validation" novalidate>
+
+                        <div class="mb-3">
+                            <label for="validationDefault01" class="form-label">First name</label>
+                            <input type="text" class="form-control" id="validationDefault01" required />
+                        </div>
+
+                        <label for="validationCustomUsername" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required />
+                            <div class="invalid-feedback">
+                                Please choose a username.
+                            </div>
+                        </div>
                         <Form.Group className="mb-3" controlId="AddModalForm.ControlInput1">
-                            <Form.Label>NIK</Form.Label>
+                            {/* <Form.Label>NIK</Form.Label>
                             <Form.Control
                                 autoFocus
                                 required
                                 type="text"
                                 name="nik"
+                                id="nik"
                                 onChange={handleOnChange}
-                                value={props?.nik}
-                                disabled
                             />
+                            {message && message} */}
+
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="AddModalForm.ControlInput1">
@@ -73,10 +110,11 @@ function EditModal(props) {
                                 required
                                 type="text"
                                 name='name'
+                                id="name"
                                 onChange={handleOnChange}
-                                value={form?.name}
                             />
                         </Form.Group>
+                        {message && message}
 
                         <Form.Group className="mb-3" controlId="AddModalForm.ControlInput1">
                             <Form.Label>Gender</Form.Label>
@@ -91,8 +129,7 @@ function EditModal(props) {
                                         name="gender"
                                         id="male"
                                         value="male"
-                                        onChange={handleOnChange}
-                                        checked={form?.gender === "male"}
+                                    // onChange={handleOnChange}
                                     />
                                     <label className="form-check-label" for="male">Male</label>
                                 </div>
@@ -105,8 +142,7 @@ function EditModal(props) {
                                         name="gender"
                                         id="female"
                                         value="female"
-                                        onChange={handleOnChange}
-                                        checked={form?.gender === "female"}
+                                    // onChange={handleOnChange}
                                     />
                                     <label className="form-check-label" for="female">Female</label>
                                 </div>
@@ -121,8 +157,7 @@ function EditModal(props) {
                                 type='date'
                                 id='date'
                                 name='birth'
-                                onChange={handleOnChange}
-                                value={form?.birth}
+                            // onChange={handleOnChange}
                             />
                         </Form.Group>
 
@@ -137,8 +172,7 @@ function EditModal(props) {
                                 required
                                 type='text'
                                 name='address'
-                                onChange={handleOnChange}
-                                value={form?.address}
+                            // onChange={handleOnChange}
                             />
                         </Form.Group>
 
@@ -150,8 +184,7 @@ function EditModal(props) {
                                 required
                                 name='country'
                                 id='country'
-                                onChange={handleOnChange}
-                                value={form?.country}
+                            // onChange={handleOnChange}
                             >
                                 <option selected disabled>Choose Country</option>
                                 <option value="Indonesia">Indonesia</option>
@@ -164,26 +197,20 @@ function EditModal(props) {
                             </select>
                         </Form.Group>
 
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" type='submit' onClick={handleClose}>
+                            Save Changes
+                        </Button>
                     </Form>
+
                 </Modal.Body>
-                <Modal.Footer>
 
-                    <Button
-                        variant="primary"
-                        onClick={(e) => {
-                            handleClose()
-                            handleOnSubmit.mutate(e)
-                        }}>Save
-                    </Button>
-
-                    <Button variant="danger" onClick={handleClose}>
-                        Cancel
-                    </Button>
-
-                </Modal.Footer>
             </Modal>
         </>
     );
 }
 
-export default EditModal
+export default NewAddModal;
+// render(<Example />);
